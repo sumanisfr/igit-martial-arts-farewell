@@ -195,7 +195,7 @@ function VideoScreen({ visible }) {
         {/* ── Local HTML5 Video Player ── */}
         {useLocal ? (
           <>
-            {showOverlay && useLocal && (
+            {showOverlay && (
               <div className="video-overlay" onClick={handleManualPlay}>
                 <div className="overlay-content">
                   <div className="play-pulse" />
