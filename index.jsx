@@ -192,32 +192,32 @@ function VideoScreen({ visible }) {
       <div className="corner-frame bottom-right" />
 
       <div className="video-container">
-        {/* ── Overlay before play (local video only) ── */}
-        {showOverlay && useLocal && (
-          <div className="video-overlay" onClick={handleManualPlay}>
-            <div className="overlay-content">
-              <div className="play-pulse" />
-              <div className="play-btn">▶</div>
-              <p className="overlay-text">TAP TO PLAY TRIBUTE</p>
-            </div>
-          </div>
-        )}
-
         {/* ── Local HTML5 Video Player ── */}
         {useLocal ? (
-          <video
-            ref={videoRef}
-            className="video-iframe"
-            controls
-            autoPlay
-            onEnded={() => setShowOverlay(false)}
-            onError={() => setVideoError(true)}
-          >
-            <source src={localVideoUrl} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          <>
+            {showOverlay && useLocal && (
+              <div className="video-overlay" onClick={handleManualPlay}>
+                <div className="overlay-content">
+                  <div className="play-pulse" />
+                  <div className="play-btn">▶</div>
+                  <p className="overlay-text">TAP TO PLAY TRIBUTE</p>
+                </div>
+              </div>
+            )}
+            <video
+              ref={videoRef}
+              className="video-iframe"
+              controls
+              autoPlay
+              onEnded={() => setShowOverlay(false)}
+              onError={() => setVideoError(true)}
+            >
+              <source src={localVideoUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </>
         ) : (
-          /* ── Google Drive iframe embed (fallback) - auto plays ── */
+          /* ── Google Drive iframe embed (fallback) ── */
           <iframe
             ref={iframeRef}
             src={driveVideoPreview}
