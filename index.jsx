@@ -473,7 +473,7 @@ function SeniorsPage() {
 
 // ─── QR Page ──────────────────────────────────────────────────────────────
 function QRPage() {
-  const pageUrl = "https://igit-martial-arts-farewell.vercel.app";
+  const pageUrl = "https://martial-arts-lymj65ljh-sumanisfrs-projects.vercel.app";
   const qrUrl = generateQRDataURL(pageUrl);
   const [copied, setCopied] = useState(false);
 
