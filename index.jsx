@@ -126,32 +126,40 @@ function VideoScreen({ visible }) {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showOverlay, setShowOverlay] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
+  const [useLocal, setUseLocal] = useState(false);
   const iframeRef = useRef(null);
   const videoRef = useRef(null);
 
-  // Google Drive folder: convert to embeddable
-  // Primary: try direct video embed from Drive
-  // The folder ID: 175-pA7_x_mWq6C8cUgLFUql0hx-tMAKb
   const driveFolderId = "175-pA7_x_mWq6C8cUgLFUql0hx-tMAKb";
-  
-  // We'll embed the folder view and also provide a direct link
-  const driveEmbedUrl = `https://drive.google.com/embeddedfolderview?id=${driveFolderId}#list`;
-  // For video autoplay, use the video preview URL pattern
   const driveVideoPreview = `https://drive.google.com/file/d/${driveFolderId}/preview`;
+  const localVideoUrl = "/videos/Seniors.mp4";
+
+  // Check if local video exists
+  useEffect(() => {
+    const checkLocalVideo = async () => {
+      try {
+        const res = await fetch(localVideoUrl, { method: "HEAD" });
+        if (res.ok) {
+          setUseLocal(true);
+        }
+      } catch (e) {
+        setUseLocal(false);
+      }
+    };
+    checkLocalVideo();
+  }, []);
 
   const handleManualPlay = () => {
     setShowOverlay(false);
     setIsPlaying(true);
-    if (videoRef.current) {
-      videoRef.current.muted = false;
+    if (useLocal && videoRef.current) {
       videoRef.current.play().catch(() => setVideoError(true));
     }
   };
 
   const handleReplay = () => {
     setShowOverlay(false);
-    if (videoRef.current) {
+    if (useLocal && videoRef.current) {
       videoRef.current.currentTime = 0;
       videoRef.current.play();
     }
@@ -159,10 +167,12 @@ function VideoScreen({ visible }) {
 
   useEffect(() => {
     if (visible) {
-      const t = setTimeout(() => setShowOverlay(false), 500);
+      const t = setTimeout(() => {
+        if (!useLocal) setShowOverlay(false);
+      }, 500);
       return () => clearTimeout(t);
     }
-  }, [visible]);
+  }, [visible, useLocal]);
 
   return (
     <div className={`video-screen ${visible ? "visible" : ""}`}>
@@ -175,8 +185,8 @@ function VideoScreen({ visible }) {
       <div className="corner-frame bottom-right" />
 
       <div className="video-container">
-        {/* ── Overlay before play ── */}
-        {showOverlay && (
+        {/* ── Overlay before play (local video only) ── */}
+        {showOverlay && useLocal && (
           <div className="video-overlay" onClick={handleManualPlay}>
             <div className="overlay-content">
               <div className="play-pulse" />
@@ -186,17 +196,31 @@ function VideoScreen({ visible }) {
           </div>
         )}
 
-        {/* ── Google Drive iframe embed ── */}
-        <iframe
-          ref={iframeRef}
-          src={driveVideoPreview}
-          className="video-iframe"
-          allow="autoplay; fullscreen"
-          allowFullScreen
-          title="IGIT Martial Arts Farewell Video"
-          onLoad={() => setVideoLoaded(true)}
-          onError={() => setVideoError(true)}
-        />
+        {/* ── Local HTML5 Video Player ── */}
+        {useLocal ? (
+          <video
+            ref={videoRef}
+            className="video-iframe"
+            controls
+            onEnded={() => setShowOverlay(false)}
+            onError={() => setVideoError(true)}
+          >
+            <source src={localVideoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          /* ── Google Drive iframe embed (fallback) ── */
+          <iframe
+            ref={iframeRef}
+            src={driveVideoPreview}
+            className="video-iframe"
+            allow="autoplay; fullscreen"
+            allowFullScreen
+            title="IGIT Martial Arts Farewell Video"
+            onLoad={() => setVideoLoaded(true)}
+            onError={() => setVideoError(true)}
+          />
+        )}
 
         {/* ── Error fallback ── */}
         {videoError && (
@@ -217,10 +241,12 @@ function VideoScreen({ visible }) {
 
       {/* ── Controls bar ── */}
       <div className="controls-bar">
-        <button className="ctrl-btn" onClick={handleReplay}>
-          ↺ Replay
-        </button>
-        <span className="ctrl-title">IGIT Martial Arts Farewell</span>
+        {useLocal && (
+          <button className="ctrl-btn" onClick={handleReplay}>
+            ↺ Replay
+          </button>
+        )}
+        <span className="ctrl-title">IGIT Martial Arts Farewell {useLocal ? "(Local)" : "(Drive)"}</span>
         <a
           href={`https://drive.google.com/drive/folders/${driveFolderId}`}
           target="_blank"
