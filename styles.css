@@ -246,9 +246,10 @@ body {
     inset 0 0 40px rgba(0,0,0,0.5);
 }
 
-.video-iframe {
+.tribute-video {
   width: 100%; height: 100%;
   border: none; display: block;
+  background: #000;
 }
 
 .video-overlay {
@@ -277,10 +278,12 @@ body {
   border-radius: 50%;
   background: var(--gold);
   color: var(--black); font-size: 1.8rem;
+  border: none;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 1rem;
   position: relative; z-index: 1;
   box-shadow: 0 0 30px rgba(212,175,55,0.5);
+  cursor: pointer;
 }
 .overlay-text {
   font-family: 'Share Tech Mono', monospace;
@@ -321,8 +324,14 @@ body {
 .ctrl-btn:hover { background: rgba(212,175,55,0.1); }
 
 .honor-message {
-  margin-top: 1.5rem; text-align: center;
-  padding: 0 1rem;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 1rem;
+  text-align: center;
+  padding: 1rem;
+  border-top: 1px solid rgba(212,175,55,0.12);
+  border-bottom: 1px solid rgba(212,175,55,0.12);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
 }
 .honor-text {
   font-family: 'Crimson Pro', serif; font-style: italic;
@@ -531,7 +540,94 @@ body {
   .seniors-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
   .senior-card { padding: 1rem; }
   .corner-frame { display: none; }
+  .video-screen {
+    min-height: auto;
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+  .video-container {
+    width: min(100%, 220px);
+    max-width: 220px;
+    aspect-ratio: 9 / 16;
+    border-radius: 0;
+    margin: 0 auto;
+  }
+  .tribute-video {
+    object-fit: contain;
+  }
+  .video-overlay {
+    padding: 1rem;
+  }
+  .overlay-content {
+    width: 100%;
+  }
+  .play-pulse {
+    width: 120px;
+    height: 120px;
+  }
+  .play-btn {
+    width: 92px;
+    height: 92px;
+    font-size: 2rem;
+  }
+  .overlay-text {
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    margin-top: 0.5rem;
+  }
+  .controls-bar {
+    max-width: 100%;
+    padding: 0.65rem 0.75rem;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
+    justify-content: center;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+  .ctrl-btn {
+    min-height: 40px;
+    min-width: 120px;
+    padding: 0.7rem 1rem;
+    text-align: center;
+  }
+  .honor-message {
+    margin-top: 0;
+    padding: 1rem 0.9rem;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+  .honor-text {
+    display: block;
+    max-width: 280px;
+    margin: 0 auto;
+    line-height: 1.45;
+  }
+  .site-footer {
+    padding: 1rem 0.9rem 1.75rem;
+  }
+  .footer-text {
+    max-width: 290px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
 }
 @media (max-width: 380px) {
   .seniors-grid { grid-template-columns: 1fr; }
+  .play-btn {
+    width: 82px;
+    height: 82px;
+    font-size: 1.8rem;
+  }
+  .overlay-text {
+    font-size: 0.62rem;
+  }
+  .controls-bar {
+    gap: 0.55rem;
+  }
+  .ctrl-btn {
+    min-width: 0;
+    flex: 1 1 0;
+  }
 }

@@ -20,7 +20,11 @@ const BELT_ORDER = {
   "Purple Belt": 4,
 };
 
-const DRIVE_FOLDER_ID = "175-pA7_x_mWq6C8cUgLFUql0hx-tMAKb";
+const DRIVE_FILE_ID = "175-pA7_x_mWq6C8cUgLFUql0hx-tMAKb";
+const DRIVE_FOLDER_ID = DRIVE_FILE_ID;
+const LOCAL_VIDEO_SOURCES = ["Seniors.mp4", "public/Seniors.mp4"];
+const AVATAR_BASE_PATHS = ["public/avatars", "avatars"];
+const DEPLOYED_SITE_URL = "https://sumanisfr.github.io/igit-martial-arts-farewell/";
 
 // ─── State ───────────────────────────────────────────────────────────────────
 let state = {
@@ -70,17 +74,7 @@ function initIntroScreen() {
     renderCurrentPage();
     
     // Auto-start video after a short delay
-    setTimeout(() => {
-      const overlay = document.querySelector(".video-overlay");
-      if (overlay) {
-        overlay.style.display = "none";
-      }
-      const iframe = document.querySelector(".video-iframe");
-      if (iframe) {
-        // Video auto-plays due to allow="autoplay" attribute
-        iframe.style.opacity = "1";
-      }
-    }, 800);
+    setTimeout(() => startTributeVideo(true), 800);
     
     detectImages();
   }, 4000);
@@ -100,6 +94,10 @@ function initTabs() {
 
 // ─── Video Screen ─────────────────────────────────────────────────────────
 function renderVideoScreen() {
+  const localSources = LOCAL_VIDEO_SOURCES.map(
+    source => `<source src="${source}" type="video/mp4">`
+  ).join("");
+
   return `
     <div class="video-screen visible">
       <div class="corner-frame top-left"></div>
@@ -108,20 +106,32 @@ function renderVideoScreen() {
       <div class="corner-frame bottom-right"></div>
 
       <div class="video-container">
-        <div class="video-overlay" onclick="this.style.display='none'">
+        <div class="video-overlay" style="display: none;">
           <div class="overlay-content">
             <div class="play-pulse"></div>
             <div class="play-btn">▶</div>
-            <p class="overlay-text">TAP TO PLAY TRIBUTE</p>
+            <p class="overlay-text">Tap to start with sound</p>
           </div>
         </div>
-        <iframe src="https://drive.google.com/file/d/${DRIVE_FOLDER_ID}/preview" class="video-iframe" allow="autoplay; fullscreen" allowfullscreen title="IGIT Martial Arts Farewell Video"></iframe>
+        <video
+          class="tribute-video"
+          poster="public/avatars/anisha.png"
+          playsinline
+          webkit-playsinline
+          autoplay
+          controls
+          preload="auto"
+          title="IGIT Martial Arts Farewell Video"
+        >
+          ${localSources}
+          Your browser does not support the tribute video.
+        </video>
       </div>
 
       <div class="controls-bar">
         <button class="ctrl-btn" onclick="location.reload()">↺ Replay</button>
         <span class="ctrl-title">IGIT Martial Arts Farewell</span>
-        <a href="https://drive.google.com/drive/folders/${DRIVE_FOLDER_ID}" target="_blank" rel="noreferrer" class="ctrl-btn">⛶ Full View</a>
+        <a href="https://drive.google.com/file/d/${DRIVE_FILE_ID}/view" target="_blank" rel="noreferrer" class="ctrl-btn">Open Drive</a>
       </div>
 
       <div class="honor-message">
@@ -132,6 +142,55 @@ function renderVideoScreen() {
 }
 
 // ─── Seniors Page ─────────────────────────────────────────────────────────
+function startTributeVideo(withSound = true) {
+  const video = document.querySelector(".tribute-video");
+  const overlay = document.querySelector(".video-overlay");
+  if (!video) return;
+
+  if (overlay) {
+    overlay.onclick = () => startTributeVideo(true);
+  }
+
+  video.muted = !withSound;
+  video.volume = 1;
+
+  const playAttempt = video.play();
+  if (playAttempt && typeof playAttempt.then === "function") {
+    playAttempt
+      .then(() => {
+        if (overlay) {
+          overlay.style.display = "none";
+        }
+      })
+      .catch(() => {
+        if (withSound) {
+          video.muted = true;
+          video.play()
+            .then(() => {
+              if (overlay) {
+                overlay.style.display = "flex";
+              }
+            })
+            .catch(() => {
+              if (overlay) {
+                overlay.style.display = "flex";
+              }
+            });
+          return;
+        }
+
+        if (overlay) {
+          overlay.style.display = "flex";
+        }
+      });
+    return;
+  }
+
+  if (overlay) {
+    overlay.style.display = "none";
+  }
+}
+
 function getSortedSeniors() {
   return [...SENIORS].sort((a, b) => {
     const beltDelta = (BELT_ORDER[a.belt] ?? 99) - (BELT_ORDER[b.belt] ?? 99);
@@ -172,8 +231,7 @@ function renderSeniorsPage() {
     html += `
       <div class="senior-card" style="animation-delay: ${i * 0.1}s">
         <div class="senior-avatar">
-          ${img ? `<img src="${img}" alt="${senior.name}" onerror="this.style.display='none'">` : ''}
-          ${!img ? `<div class="avatar-initials">${initials}</div>` : ''}
+          ${img ? `<img src="${img}" alt="${senior.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;" onerror="this.parentElement.innerHTML='<div class=&quot;avatar-initials&quot;>${initials}</div>'">` : `<div class="avatar-initials">${initials}</div>`}
         </div>
         <h3 class="senior-name">${senior.name}</h3>
         <span class="belt-badge" style="background: ${beltColor}; border-color: ${beltColor};">${senior.belt}</span>
@@ -196,7 +254,7 @@ function renderSeniorsPage() {
 
 // ─── QR Page ──────────────────────────────────────────────────────────────
 function renderQRPage() {
-  const pageUrl = window.location.origin;
+  const pageUrl = DEPLOYED_SITE_URL;
   const qrUrl = generateQRDataURL(pageUrl);
   return `
     <div class="qr-page">
@@ -223,7 +281,7 @@ function renderQRPage() {
           <a href="${qrUrl}" download="igit-farewell-qr.png" class="gold-btn">⬇ Download QR (PNG)</a>
           <button class="gold-btn outline" onclick="copyToClipboard('${pageUrl}')">⎘ Copy URL</button>
         </div>
-        <p class="qr-note">💡 Update this URL once you deploy to production</p>
+        <p class="qr-note">Live URL set for GitHub Pages deployment</p>
       </div>
 
       <div class="deploy-guide">
@@ -251,25 +309,35 @@ async function detectImages() {
   const newImages = {};
 
   for (const senior of sortedSeniors) {
-    const base = `/avatars/${senior.name.toLowerCase()}`;
+    const slug = senior.name.toLowerCase();
 
-    // Try PNG
-    try {
-      const resPng = await fetch(`${base}.png`, { method: "HEAD" });
-      if (resPng.ok) {
-        newImages[senior.name] = `${base}.png`;
-        continue;
-      }
-    } catch (e) {}
+    for (const basePath of AVATAR_BASE_PATHS) {
+      const base = `${basePath}/${slug}`;
 
-    // Try JPG
-    try {
-      const resJpg = await fetch(`${base}.jpg`, { method: "HEAD" });
-      if (resJpg.ok) {
-        newImages[senior.name] = `${base}.jpg`;
-        continue;
-      }
-    } catch (e) {}
+      try {
+        const resPng = await fetch(`${base}.png`, { method: "HEAD" });
+        if (resPng.ok) {
+          newImages[senior.name] = `${base}.png`;
+          break;
+        }
+      } catch (e) {}
+
+      try {
+        const resJpg = await fetch(`${base}.jpg`, { method: "HEAD" });
+        if (resJpg.ok) {
+          newImages[senior.name] = `${base}.jpg`;
+          break;
+        }
+      } catch (e) {}
+
+      try {
+        const resJpeg = await fetch(`${base}.jpeg`, { method: "HEAD" });
+        if (resJpeg.ok) {
+          newImages[senior.name] = `${base}.jpeg`;
+          break;
+        }
+      } catch (e) {}
+    }
   }
 
   state.images = newImages;
@@ -293,6 +361,10 @@ function renderCurrentPage() {
   }
 
   container.innerHTML = html;
+
+  if (state.activeTab === "tribute") {
+    setTimeout(() => startTributeVideo(true), 150);
+  }
 }
 
 // ─── Initialize App ───────────────────────────────────────────────────────
