@@ -1,20 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <title>IGIT Martial Arts — Senior Farewell Tribute</title>
-    <meta name="description" content="A tribute to the graduating seniors of IGIT Martial Arts — a journey of strength, discipline, and honor." />
-    <meta property="og:title" content="IGIT Martial Arts Farewell Tribute" />
-    <meta property="og:description" content="Scan to watch the farewell tribute video." />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>🥋</text></svg>" />
-    <style>
-      body { margin: 0; background: #0a0a0a; }
-      #root { min-height: 100vh; }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IGIT Martial Arts — Senior Farewell Tribute</title>
+  <meta name="description" content="A tribute to the graduating seniors of IGIT Martial Arts — a journey of strength, discipline, and honor." />
+  <meta property="og:title" content="IGIT Martial Arts Farewell Tribute" />
+  <meta property="og:description" content="Scan to watch the farewell tribute video." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>🥋</text></svg>" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="intro-screen" class="intro-screen">
+    <div class="particles" aria-hidden="true"></div>
+    
+    <svg class="bg-silhouette left-sil" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="30" r="20"/><path d="M80 55 Q60 120 50 160 L70 165 Q85 130 100 110 Q115 130 130 165 L150 160 Q140 120 120 55 Z"/><path d="M80 70 Q40 60 20 80 Q30 95 50 90 Q65 85 80 85Z"/><path d="M120 70 Q160 50 185 40 Q180 60 165 70 Q145 75 125 80Z"/><path d="M130 165 Q155 200 175 230 Q185 225 180 215 Q165 190 145 165Z"/><path d="M70 165 Q65 220 65 270 L80 270 Q82 220 85 165Z"/></svg>
+    <svg class="bg-silhouette right-sil" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="30" r="20"/><path d="M80 55 Q60 120 50 160 L70 165 Q85 130 100 110 Q115 130 130 165 L150 160 Q140 120 120 55 Z"/><path d="M80 70 Q40 60 20 80 Q30 95 50 90 Q65 85 80 85Z"/><path d="M120 70 Q160 50 185 40 Q180 60 165 70 Q145 75 125 80Z"/><path d="M130 165 Q155 200 175 230 Q185 225 180 215 Q165 190 145 165Z"/><path d="M70 165 Q65 220 65 270 L80 270 Q82 220 85 165Z"/></svg>
+
+    <div class="intro-content">
+      <div class="deco-line"></div>
+      <div class="emblem">
+        <div class="emblem-ring outer-ring"></div>
+        <div class="emblem-ring inner-ring"></div>
+        <div class="emblem-icon">🥋</div>
+      </div>
+      <p class="institute-label">INDIRA GANDHI INSTITUTE OF TECHNOLOGY</p>
+      <h1 class="intro-title"><span class="title-line-1">MARTIAL ARTS</span><span class="title-divider">✦ FAREWELL TRIBUTE ✦</span></h1>
+      <p class="intro-subtitle">A journey of strength, discipline, and honor</p>
+      <div class="deco-line"></div>
+      <div class="belt-bar">
+        <div class="belt-segment" style="background: #fff;"></div>
+        <div class="belt-segment" style="background: #FFD700;"></div>
+        <div class="belt-segment" style="background: #FFA500;"></div>
+        <div class="belt-segment" style="background: #22AA22;"></div>
+        <div class="belt-segment" style="background: #0000CC;"></div>
+        <div class="belt-segment" style="background: #4B0082;"></div>
+        <div class="belt-segment" style="background: #8B0000;"></div>
+        <div class="belt-segment" style="background: #000;"></div>
+      </div>
+      <p class="loading-text">Loading your tribute…</p>
+    </div>
+  </div>
+
+  <div id="app-wrapper" class="app-wrapper" style="display: none;">
+    <header class="site-header">
+      <div class="header-logo">
+        <span class="header-logo-icon">🥋</span>
+        <div><span class="header-logo-text">IGIT Martial Arts</span><span class="header-logo-sub">Senior Farewell 2025</span></div>
+      </div>
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="tribute">🎬 Tribute</button>
+        <button class="nav-tab" data-tab="seniors">🥋 Seniors</button>
+        <button class="nav-tab" data-tab="qr">🔲 QR Code</button>
+      </nav>
+    </header>
+    <div id="content-container"></div>
+    <footer class="site-footer">
+      <p class="footer-text">"The true spirit of martial arts lives in those who carry it forward."</p>
+      <div class="deco-line" style="max-width: 300px; margin: 0.75rem auto 0;"></div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
