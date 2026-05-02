@@ -192,7 +192,6 @@ function VideoScreen({ visible }) {
       <div className="corner-frame bottom-right" />
 
       <div className="video-container">
-        {/* ── Local HTML5 Video Player ── */}
         {useLocal ? (
           <>
             {showOverlay && (
@@ -217,7 +216,6 @@ function VideoScreen({ visible }) {
             </video>
           </>
         ) : (
-          /* ── Google Drive iframe embed (fallback) ── */
           <iframe
             ref={iframeRef}
             src={driveVideoPreview}
