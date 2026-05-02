@@ -165,7 +165,7 @@ function VideoScreen({ visible }) {
     }
   };
 
-  // Auto-play video after intro completes
+  // Auto-play video after intro completes (both local and Drive)
   useEffect(() => {
     if (visible) {
       const t = setTimeout(() => {
@@ -175,6 +175,7 @@ function VideoScreen({ visible }) {
         if (useLocal && videoRef.current) {
           videoRef.current.play().catch(() => setVideoError(true));
         }
+        // Google Drive iframe will auto-play once visible
       }, 300);
       return () => clearTimeout(t);
     }
@@ -208,6 +209,7 @@ function VideoScreen({ visible }) {
             ref={videoRef}
             className="video-iframe"
             controls
+            autoPlay
             onEnded={() => setShowOverlay(false)}
             onError={() => setVideoError(true)}
           >
@@ -215,7 +217,7 @@ function VideoScreen({ visible }) {
             Your browser does not support the video tag.
           </video>
         ) : (
-          /* ── Google Drive iframe embed (fallback) ── */
+          /* ── Google Drive iframe embed (fallback) - auto plays ── */
           <iframe
             ref={iframeRef}
             src={driveVideoPreview}
