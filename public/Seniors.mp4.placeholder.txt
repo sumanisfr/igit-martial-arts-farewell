@@ -1,0 +1,7 @@
+Place your MP4 video named 'Seniors.mp4' in this folder so the app can use it as a local video source.
+
+Path after placing the file: public/Seniors.mp4
+
+Then reload the dev server page: http://localhost:5173/
+
+Note: Browsers may cache; if the video doesn't appear, clear cache or do a hard reload.
