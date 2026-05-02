@@ -167,15 +167,23 @@ function VideoScreen({ visible }) {
 
   // Auto-play video after intro completes (both local and Drive)
   useEffect(() => {
-    if (visible) {
+    if (visible && videoRef.current) {
       const t = setTimeout(() => {
         setShowOverlay(false);
         setIsPlaying(true);
         // Auto-play local video if available
-        if (useLocal && videoRef.current) {
-          videoRef.current.play().catch(() => setVideoError(true));
+        if (useLocal) {
+          videoRef.current.muted = true; // Mute to bypass autoplay restrictions
+          videoRef.current.play().catch(() => {
+            videoRef.current.muted = false;
+            setVideoError(true);
+          }).then(() => {
+            // Unmute after playing starts
+            setTimeout(() => {
+              if (videoRef.current) videoRef.current.muted = false;
+            }, 500);
+          });
         }
-        // Google Drive iframe will auto-play once visible
       }, 300);
       return () => clearTimeout(t);
     }
@@ -208,6 +216,7 @@ function VideoScreen({ visible }) {
               className="video-iframe"
               controls
               autoPlay
+              muted
               onEnded={() => setShowOverlay(false)}
               onError={() => setVideoError(true)}
             >
