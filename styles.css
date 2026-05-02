@@ -244,12 +244,13 @@ body {
     0 0 40px rgba(212,175,55,0.15),
     0 0 80px rgba(139,0,0,0.1),
     inset 0 0 40px rgba(0,0,0,0.5);
+  margin: 0 auto;
 }
 
 .tribute-video {
   width: 100%; height: 100%;
   border: none; display: block;
-  background: #000;
+  background: #000; object-fit: cover;
 }
 
 .video-overlay {
@@ -380,15 +381,19 @@ body {
 }
 
 .senior-avatar {
-  width: 160px; height: 160px; margin: 0 auto 0.75rem; border-radius: 12px; overflow: hidden;
+  width: clamp(100px, 28vw, 160px);
+  height: clamp(100px, 28vw, 160px);
+  margin: 0 auto 0.75rem; border-radius: 12px; overflow: hidden;
 }
 .senior-avatar img {
   width: 100%; height: 100%; object-fit: cover; border-radius: 12px;
 }
 .avatar-initials {
-  width: 160px; height: 160px; display: flex; align-items: center; justify-content: center;
+  width: clamp(100px, 28vw, 160px);
+  height: clamp(100px, 28vw, 160px);
+  display: flex; align-items: center; justify-content: center;
   background: linear-gradient(180deg,#1a1a1a,#111);
-  color: var(--gold); font-weight: 700; border-radius: 12px; font-family: 'Cinzel', serif; font-size: 2rem;
+  color: var(--gold); font-weight: 700; border-radius: 12px; font-family: 'Cinzel', serif; font-size: clamp(1.4rem, 4vw, 2rem);
 }
 .senior-name {
   font-family: 'Cinzel', serif; font-size: 1.1rem;
@@ -546,14 +551,14 @@ body {
     gap: 0.75rem;
   }
   .video-container {
-    width: min(100%, 220px);
-    max-width: 220px;
-    aspect-ratio: 9 / 16;
-    border-radius: 0;
-    margin: 0 auto;
+    width: 92vw;
+    max-width: 420px;
+    aspect-ratio: 16/9;
+    border-radius: 6px;
+    margin: 0.5rem auto;
   }
   .tribute-video {
-    object-fit: contain;
+    object-fit: cover;
   }
   .video-overlay {
     padding: 1rem;
@@ -576,27 +581,29 @@ body {
     margin-top: 0.5rem;
   }
   .controls-bar {
-    max-width: 100%;
-    padding: 0.65rem 0.75rem;
-    gap: 0.75rem;
-    flex-wrap: nowrap;
+    max-width: 92vw;
+    padding: 0.5rem 0.6rem;
+    gap: 0.5rem;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     border-left: none;
     border-right: none;
-    border-radius: 0;
+    border-radius: 6px;
   }
   .ctrl-btn {
     min-height: 40px;
-    min-width: 120px;
-    padding: 0.7rem 1rem;
+    width: 100%;
+    max-width: 240px;
+    padding: 0.6rem 0.8rem;
     text-align: center;
   }
   .honor-message {
-    margin-top: 0;
-    padding: 1rem 0.9rem;
+    margin-top: 0.6rem;
+    padding: 0.9rem 0.9rem;
     border-left: none;
     border-right: none;
-    border-radius: 0;
+    border-radius: 6px;
   }
   .honor-text {
     display: block;

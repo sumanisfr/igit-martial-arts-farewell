@@ -73,8 +73,8 @@ function initIntroScreen() {
     state.activeTab = "tribute";
     renderCurrentPage();
     
-    // Auto-start video after a short delay
-    setTimeout(() => startTributeVideo(true), 800);
+    // Auto-start video after a short delay (muted to allow autoplay on mobile)
+    setTimeout(() => startTributeVideo(false), 800);
     
     detectImages();
   }, 4000);
@@ -118,6 +118,7 @@ function renderVideoScreen() {
           poster="public/avatars/anisha.png"
           playsinline
           webkit-playsinline
+          muted
           autoplay
           controls
           preload="auto"
@@ -363,7 +364,8 @@ function renderCurrentPage() {
   container.innerHTML = html;
 
   if (state.activeTab === "tribute") {
-    setTimeout(() => startTributeVideo(true), 150);
+    // Attempt muted autoplay shortly after rendering to improve reliability on mobile
+    setTimeout(() => startTributeVideo(false), 150);
   }
 }
 
