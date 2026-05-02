@@ -165,11 +165,17 @@ function VideoScreen({ visible }) {
     }
   };
 
+  // Auto-play video after intro completes
   useEffect(() => {
     if (visible) {
       const t = setTimeout(() => {
-        if (!useLocal) setShowOverlay(false);
-      }, 500);
+        setShowOverlay(false);
+        setIsPlaying(true);
+        // Auto-play local video if available
+        if (useLocal && videoRef.current) {
+          videoRef.current.play().catch(() => setVideoError(true));
+        }
+      }, 300);
       return () => clearTimeout(t);
     }
   }, [visible, useLocal]);
