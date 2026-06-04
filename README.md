@@ -14,6 +14,7 @@ A beautiful, responsive tribute website for graduating martial arts seniors. Bui
 ## 📁 Project Structure
 
 ```
+...
 .
 ├── index.html              # Main HTML
 ├── styles.css              # All styling
