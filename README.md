@@ -1,6 +1,8 @@
 # 🥋 IGIT Martial Arts — Senior Farewell Tribute
 
+
 A beautiful, responsive tribute website for graduating martial arts seniors. Built with **vanilla HTML, CSS, and JavaScript** — zero dependencies, easy to deploy.
+
 
 ## ✨ Features
 
